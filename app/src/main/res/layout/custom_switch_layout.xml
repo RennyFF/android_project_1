@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_vertical">
 
     <ImageView
@@ -11,17 +12,18 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="8dp"
-        android:src="@drawable/ic_wip_sound_24dp"
+        android:src="@drawable/ic_sound_24dp"
         android:visibility="gone" /> <!-- По умолчанию скрываем иконку -->
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_compat"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="8dp"
-        android:thumb="@drawable/switch_thumb_selector"
-        android:track="@drawable/switch_track_selector" />
+        android:layout_marginStart="36dp"
+        android:thumb="@drawable/thumb"
+        android:background="@android:color/transparent"
+        app:track="@drawable/track" />
 
 </RelativeLayout>
