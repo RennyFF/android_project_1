@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_color">#4CAF50</color> <!-- Зеленый -->
+    <color name="white">#FFFFFF</color> <!-- Зеленый -->
+    <color name="grey">#EFEFEF</color> <!-- Зеленый -->
+    <color name="primary_variant_color">#388E3C</color> <!-- Темно-зеленый -->
+    <color name="secondary_color">#FF9800</color> <!-- Оранжевый -->
+    <color name="secondary_variant_color">#F57C00</color> <!-- Темно-оранжевый -->
+    <color name="black">#000000</color>
+    <color name="status_bar_color">#FFFFFF</color> <!-- Белый -->
+
+    <color name="switch_thumb_normal">#FFFFFF</color> <!-- Цвет ползунка в выключенном состоянии -->
+    <color name="switch_thumb_checked">#4CAF50</color> <!-- Цвет ползунка в включенном состоянии -->
+    <color name="switch_track_normal">#B0BEC5</color> <!-- Цвет фона -->
+</resources>

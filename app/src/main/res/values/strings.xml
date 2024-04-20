@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="title_scan">Сканирование</string>
+    <string name="title_generation">Генерация</string>
+    <string name="title_settings">Настройки</string>
+    <string name="toolbar_settings">Настройки</string>
+    <string name="toolbar_generation">Создание кодов</string>
+    <string name="sound">Звук</string>
+    <string name="vibr">Вибрация</string>
+</resources>

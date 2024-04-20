@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Когда элемент активен -->
+    <item android:state_checked="true">
+        <layer-list>
+            <!-- Зеленый прямоугольник -->
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/white" /> <!-- Зеленый цвет -->
+                </shape>
+            </item>
+            <!-- Красный прямоугольник -->
+            <item
+                android:top="0dp"
+                android:bottom="53dp"
+               > <!-- Замените "50dp" на "50" -->
+                <shape android:shape="rectangle">
+                    <solid android:color="#80BFBFBF" /> <!-- Красный цвет -->
+                    <corners android:radius="16dp" /> <!-- Закругление углов на 4dp -->
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    <!-- В остальных случаях -->
+    <item>
+        <layer-list>
+            <!-- Цветная заливка для анимации нажатия -->
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@android:color/transparent" />
+                </shape>
+            </item>
+            <!-- Фон элемента меню -->
+            <item android:id="@android:id/mask">
+                <shape android:shape="rectangle">
+                    <solid android:color="@android:color/white" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+</selector>
