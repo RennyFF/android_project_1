@@ -79,7 +79,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+            <TextView
+                android:onClick="onClick"
+                android:clickable="true"
+                android:focusable="true"
+                android:textColor="@color/black"
                 android:id="@+id/btn_scan_history"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
@@ -88,7 +92,8 @@
                 android:text="@string/history"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/icon_history"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -101,7 +106,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 app:layout_constraintBottom_toTopOf="@+id/about"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -118,7 +123,11 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
+                <TextView
+                    android:onClick="onClickTerms"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:textColor="@color/black"
                     android:id="@+id/btn_terms_of_service"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -133,7 +142,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/about"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
@@ -150,7 +159,11 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
+                <TextView
+                    android:onClick="onClickAbout"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:textColor="@color/black"
                     android:id="@+id/btn_app_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

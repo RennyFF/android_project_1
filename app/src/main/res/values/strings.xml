@@ -10,4 +10,6 @@
     <string name="history">История сканирования</string>
     <string name="about">О приложении</string>
     <string name="confid">Условия пользования</string>
+    <string name="about_info">Приложение по сканированию и генерации QR и Bar кодов\n\nРазработчик Марьин П.Е.\nТекущая версия: 1.0.0.</string>
+    <string name="terms">terms</string>
 </resources>
