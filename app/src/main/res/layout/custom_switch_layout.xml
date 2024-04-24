@@ -22,6 +22,7 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginStart="36dp"
+        android:textSize="16dp"
         android:thumb="@drawable/thumb"
         android:background="@android:color/transparent"
         app:track="@drawable/track" />
