@@ -19,9 +19,9 @@ public class AboutFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.CustomDialog);
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_layout, null); // Используйте новый макет с закругленными углами
+        View dialogView = inflater.inflate(R.layout.dialog_layout, null);
         ImageButton closeButton = dialogView.findViewById(R.id.btn_close);
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
