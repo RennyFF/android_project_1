@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation("com.github.yuriy-budiyev:code-scanner:2.3.0")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)

@@ -5,17 +5,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
-
-   <com.journeyapps.barcodescanner.DecoratedBarcodeView
-       android:id="@+id/barcode_scanner"
+    <TextView
+        android:id="@+id/aboba"
+        android:text="aSDASD"
+        android:elevation="14dp"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></TextView>
+   <FrameLayout
+       xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto"
        android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:layout_alignParentTop="true"
-       app:zxing_framing_rect_height="200dp"
-       app:zxing_framing_rect_width="200dp"
-       app:zxing_preview_scaling_strategy="fitXY"
-       />
+       android:layout_height="match_parent">
 
+      <com.budiyev.android.codescanner.CodeScannerView
+          android:id="@+id/scanner_view"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          app:autoFocusButtonColor="@android:color/white"
+          app:autoFocusButtonVisible="false"
+          app:flashButtonColor="@android:color/white"
+          app:flashButtonVisible="false"
+          app:frameColor="@android:color/white"
+          app:frameCornersSize="30dp"
+          app:frameCornersRadius="10dp"
+          app:frameAspectRatioWidth="1"
+          app:frameAspectRatioHeight="1"
+          app:frameSize="0.55"
+          app:frameThickness="3dp"
+          app:frameVerticalBias="0.5"
+          app:maskColor="#77000000"/>
+   </FrameLayout>
    <FrameLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
