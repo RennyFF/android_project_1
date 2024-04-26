@@ -76,9 +76,7 @@ public class NotificationsFragment extends Fragment {
         btn_terms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Получение навигационного контроллера
                 NavController navController = Navigation.findNavController(v);
-                // Навигация к фрагменту TermsFragment
                 navController.navigate(R.id.navigation_terms);
             }
         });

@@ -28,4 +28,10 @@
         android:name="com.example.myapplication.ui.notifications.TermsFragment"
         android:label="@string/terms"
         tools:layout="@layout/dialog_layout_terms" />
+
+    <fragment
+        android:id="@+id/navigation_scanned"
+        android:name="com.example.myapplication.ui.home.ScannedFragment"
+        android:label="@string/scanned"
+        tools:layout="@layout/scanned_layout" />
 </navigation>
