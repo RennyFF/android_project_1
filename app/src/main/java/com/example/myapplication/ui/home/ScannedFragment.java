@@ -6,6 +6,8 @@ import static androidx.core.content.ContextCompat.getSystemService;
 import static com.example.myapplication.ui.home.HomeFragment.ResultTextCODE;
 import static com.example.myapplication.ui.home.HomeFragment.aboba;
 
+import static java.lang.System.in;
+
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -34,13 +36,21 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
 public class ScannedFragment extends Fragment {
+    protected ArrayList<BarcodeFormat> QrSimilar = new ArrayList<BarcodeFormat>(4);
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        QrSimilar.add(BarcodeFormat.DATA_MATRIX);
+        QrSimilar.add(BarcodeFormat.AZTEC);
+        QrSimilar.add(BarcodeFormat.MAXICODE);
+        QrSimilar.add(BarcodeFormat.QR_CODE);
+
         View rootView = inflater.inflate(R.layout.scanned_layout, container, false);;
         TextView info = rootView.findViewById(R.id.info_scanned);
         TextView text = rootView.findViewById(R.id.result_text);
@@ -69,13 +79,18 @@ public class ScannedFragment extends Fragment {
 
         //TODO: ПРОВЕРКА НА HEIGHT если формат как barcode то один height, иначе другой(квадрат)
 
-        Bitmap bitmap = encodeAsBitmap(aboba.getText(), aboba.getBarcodeFormat(), 600, 600);
+        Bitmap bitmap = encodeAsBitmap(aboba.getText(), aboba.getBarcodeFormat(), 600);
         final ImageView myImage = (ImageView) rootView.findViewById(R.id.test);
         myImage.setImageBitmap(bitmap);
 
         return rootView;
     }
-    Bitmap encodeAsBitmap(String contents, BarcodeFormat format, int img_width, int img_height) {
+
+    private int getHeightByFormat(BarcodeFormat bf){
+        return QrSimilar.contains(bf)?600:300;
+    }
+
+    Bitmap encodeAsBitmap(String contents, BarcodeFormat format, int img_width) {
         String contentsToEncode = contents;
         if (contentsToEncode == null) {
             return null;
@@ -90,7 +105,7 @@ public class ScannedFragment extends Fragment {
         MultiFormatWriter writer = new MultiFormatWriter();
         BitMatrix result;
         try {
-            result = writer.encode(contentsToEncode, format, img_width, img_height, hints);
+            result = writer.encode(contentsToEncode, format, img_width, getHeightByFormat(format), hints);
         } catch (IllegalArgumentException iae) {
             // Unsupported format
             Log.d("XXX4", "Не поддерживаемый формат -" + iae);

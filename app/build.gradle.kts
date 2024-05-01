@@ -33,6 +33,9 @@ android {
 }
 
 dependencies {
+    implementation("androidx.room:room-runtime:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
+
     implementation("com.github.yuriy-budiyev:code-scanner:2.3.0")
     implementation(libs.appcompat)
     implementation(libs.material)

@@ -34,4 +34,10 @@
         android:name="com.example.myapplication.ui.home.ScannedFragment"
         android:label="@string/scanned"
         tools:layout="@layout/scanned_layout" />
+
+    <fragment
+        android:id="@+id/navigation_history_scanned"
+        android:name="com.example.myapplication.ui.notifications.HistoryFragment"
+        android:label="@string/historyscanned"
+        tools:layout="@layout/fragment_history" />
 </navigation>

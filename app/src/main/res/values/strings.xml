@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">QR-GenScan</string>
     <string name="title_scan">Сканирование</string>
     <string name="title_generation">Генерация</string>
     <string name="title_settings">Настройки</string>
@@ -29,4 +29,6 @@
     </string>
     <string name="resultat">Результат:</string>
     <string name="null_text">null</string>
+    <string name="back_to_settings">Настройки</string>
+    <string name="historyscanned">HistoryScanned</string>
 </resources>

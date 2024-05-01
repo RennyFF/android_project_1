@@ -109,12 +109,30 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageView
-        android:id="@+id/test"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/test_constraint"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:layout_below="@+id/constraintLayout3"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="24dp" />
+        android:layout_alignParentEnd="true"
+        android:layout_margin="12dp"
+        android:layout_marginStart="375dp"
+        android:layout_marginEnd="375dp"
+        android:background="@drawable/custom_rounded_constraint">
+
+        <ImageView
+            android:id="@+id/test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/test_constraint"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/custom_rounded_constraint"
+            android:padding="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>
