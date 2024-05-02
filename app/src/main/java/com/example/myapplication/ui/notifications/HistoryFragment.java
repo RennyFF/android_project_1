@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,7 +40,7 @@ public class HistoryFragment extends Fragment {
         mHistoryDAO = Room.databaseBuilder(requireContext(), HistoryDB.class, "HistoryDB")
                 .build().getHistoryDAO();
 
-        RelativeLayout historyListLayout = rootView.findViewById(R.id.history_list);
+        LinearLayout historyListLayout = rootView.findViewById(R.id.history_list);
 
         TextView backBtn = rootView.findViewById(R.id.btn_back_settings);
         backBtn.setOnClickListener(v -> {
@@ -53,10 +54,10 @@ public class HistoryFragment extends Fragment {
     }
     private static class LoadHistoryTask extends AsyncTask<Void, Void, List<History>> {
         private Context context;
-        private RelativeLayout historyListLayout;
+        private LinearLayout historyListLayout;
         private HistoryDAO historyDAO;
 
-        public LoadHistoryTask(Context context, RelativeLayout historyListLayout) {
+        public LoadHistoryTask(Context context, LinearLayout historyListLayout) {
             this.context = context;
             this.historyListLayout = historyListLayout;
         }
@@ -71,7 +72,7 @@ public class HistoryFragment extends Fragment {
 
         @Override
         protected List<History> doInBackground(Void... voids) {
-            // Выполнение запроса к базе данных в фоновом потоке
+
             return historyDAO.getAllHistory();
         }
 
@@ -113,8 +114,6 @@ public class HistoryFragment extends Fragment {
             TextView resultTextView = new TextView(context);
             resultTextView.setText(history.getResult_text());
             layout.addView(resultTextView);
-
-            // Добавляем макет в карточку
             cardView.addView(layout);
 
             return cardView;
