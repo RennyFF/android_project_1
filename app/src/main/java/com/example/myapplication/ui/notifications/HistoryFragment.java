@@ -4,9 +4,14 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -87,37 +92,91 @@ public class HistoryFragment extends Fragment {
         }
 
         private CardView createHistoryCard(Context context, History history) {
-            // Создаем новую карточку истории
             CardView cardView = new CardView(context);
-            cardView.setLayoutParams(new CardView.LayoutParams(
+            CardView.LayoutParams cardParams = new CardView.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
-            ));
+            );
+            cardParams.setMargins(24, 24, 24, 24);
+            cardView.setLayoutParams(cardParams);
             cardView.setCardBackgroundColor(Color.WHITE);
-            cardView.setRadius(16); // Устанавливаем скругление углов
+            cardView.setCardElevation(0);
+            cardView.setRadius(24);
 
-            // Создаем макет для содержимого карточки
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
             );
             LinearLayout layout = new LinearLayout(context);
             layout.setLayoutParams(layoutParams);
-            layout.setOrientation(LinearLayout.VERTICAL);
+            layout.setOrientation(LinearLayout.HORIZONTAL);
             layout.setPadding(24, 24, 24, 24);
 
-            // Создаем и добавляем текстовые элементы в макет
+            LinearLayout.LayoutParams left_layout_params = new LinearLayout.LayoutParams(
+                    0,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    3.0f // увеличиваем вес
+            );
+            LinearLayout left_layout = new LinearLayout(context);
+            left_layout_params.setMargins(0, 0,24,0);
+            left_layout.setLayoutParams(left_layout_params);
+            left_layout.setOrientation(LinearLayout.VERTICAL);
+
             TextView dateTimeTextView = new TextView(context);
             dateTimeTextView.setText(history.getDate_time());
-            layout.addView(dateTimeTextView);
+            LinearLayout.LayoutParams dateTimeParams = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            dateTimeParams.setMargins(0, 0, 0, dpToPx(context, 6)); // Уменьшаем отступ вниз
+            dateTimeTextView.setLayoutParams(dateTimeParams);
+            left_layout.addView(dateTimeTextView);
 
             TextView resultTextView = new TextView(context);
             resultTextView.setText(history.getResult_text());
-            layout.addView(resultTextView);
+            resultTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16); // Устанавливаем размер текста
+            resultTextView.setTextColor(Color.BLACK); // Устанавливаем цвет текста
+            left_layout.addView(resultTextView);
+
+            layout.addView(left_layout);
+
+            ImageView imageView = new ImageView(context);
+            imageView.setImageResource(R.drawable.ic_trash_24dp);
+            imageView.setId(history.getId());
+            LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            imageParams.gravity = Gravity.CENTER_VERTICAL | Gravity.END;
+            imageView.setLayoutParams(imageParams);
+            imageView.setPadding(12,12,12,12);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            historyDAO.deleteHistory(history);
+                        }
+                    }).start();
+                }
+            });
+            layout.addView(imageView);
+
+
             cardView.addView(layout);
 
             return cardView;
         }
+
+        // Метод для преобразования dp в пиксели
+        private int dpToPx(Context context, int dp) {
+            float density = context.getResources().getDisplayMetrics().density;
+            return Math.round(dp * density);
+        }
+
+
+
     }
 
 

@@ -44,6 +44,15 @@ public class History {
         this.type = type;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
     public History(String date_time, String result_text, String type) {
         this.date_time = date_time;
         this.result_text = result_text;

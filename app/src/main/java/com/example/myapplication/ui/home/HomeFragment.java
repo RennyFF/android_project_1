@@ -97,18 +97,17 @@ public class HomeFragment extends Fragment {
                             success_sound.start();
                         }
                         ScanResult sr = new ScanResult(result.getBarcodeFormat().toString(), getNow(), result.getText().toString());
-                        NavController navController = Navigation.findNavController(requireView());
-                        navController.navigate(id.navigation_scanned);
                       ResultTextCODE = sr;
                       aboba = result;
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                // Операция добавления записи в базу данных
                                 History history = new History(ResultTextCODE.DATE, ResultTextCODE.RESULT_TEXT, ResultTextCODE.TYPE);
                                 mHistoryDAO.addHistory(history);
                             }
                         }).start();
+                        NavController navController = Navigation.findNavController(requireView());
+                        navController.navigate(id.navigation_scanned);
                     }
                 });
             }
