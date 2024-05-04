@@ -1,5 +1,7 @@
 package com.example.myapplication.ui.home;
 
+import com.example.myapplication.History;
+
 public class ScanResult {
     public static String TYPE = "unknown";
     public static String DATE = "01/01/1990, 00:00";

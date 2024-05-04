@@ -8,6 +8,7 @@
     <color name="secondary_variant_color">#F57C00</color> <!-- Темно-оранжевый -->
     <color name="black">#000000</color>
     <color name="status_bar_color">#FFFFFF</color> <!-- Белый -->
+    <color name="red_decline">#F35F5F</color> <!-- Белый -->
 
     <color name="switch_thumb_normal">#FFFFFF</color> <!-- Цвет ползунка в выключенном состоянии -->
     <color name="switch_thumb_checked">#4CAF50</color> <!-- Цвет ползунка в включенном состоянии -->

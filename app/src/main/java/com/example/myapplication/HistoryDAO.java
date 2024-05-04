@@ -17,6 +17,6 @@ public interface HistoryDAO {
     public void deleteHistory(History history);
     @Query("select * from HistoryDB")
     public List<History> getAllHistory();
-    @Query("select * from HistoryDB where id==:id")
-    public History getHistory(int id);
+    @Query("select * from HistoryDB order by id desc limit 1")
+    public History getLastEntry();
 }

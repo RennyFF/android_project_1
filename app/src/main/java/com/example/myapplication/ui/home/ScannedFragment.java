@@ -28,8 +28,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.room.Room;
 
+import com.example.myapplication.History;
+import com.example.myapplication.HistoryDAO;
+import com.example.myapplication.HistoryDB;
 import com.example.myapplication.R;
+import com.example.myapplication.ui.GenerateCode;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -43,6 +48,9 @@ import java.util.Map;
 
 public class ScannedFragment extends Fragment {
     protected ArrayList<BarcodeFormat> QrSimilar = new ArrayList<BarcodeFormat>(4);
+    private GenerateCode generateCode = new GenerateCode();
+    private HistoryDAO mHistoryDAO;
+    private HistoryDB mHistoryDB;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,10 +59,14 @@ public class ScannedFragment extends Fragment {
         QrSimilar.add(BarcodeFormat.MAXICODE);
         QrSimilar.add(BarcodeFormat.QR_CODE);
 
+        mHistoryDB = Room.databaseBuilder(requireContext(), HistoryDB.class, "HistoryDB").build();
+        mHistoryDAO = mHistoryDB.getHistoryDAO();
+
         View rootView = inflater.inflate(R.layout.scanned_layout, container, false);;
         TextView info = rootView.findViewById(R.id.info_scanned);
         TextView text = rootView.findViewById(R.id.result_text);
         ImageView copybtn = rootView.findViewById(R.id.copyresult);
+        ImageView deletebtn = rootView.findViewById(R.id.deleteresult);
         info.setText(ResultTextCODE.TYPE +" | Отсканированно: " + ResultTextCODE.DATE);
         text.setText(ResultTextCODE.RESULT_TEXT);
 
@@ -77,9 +89,16 @@ public class ScannedFragment extends Fragment {
             }
         });
 
-        //TODO: ПРОВЕРКА НА HEIGHT если формат как barcode то один height, иначе другой(квадрат)
+        deletebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteLastHistoryEntry();
+                NavController navController = Navigation.findNavController(v);
+                navController.navigate(R.id.navigation_scan);
+            }
+        });
 
-        Bitmap bitmap = encodeAsBitmap(aboba.getText(), aboba.getBarcodeFormat(), 600);
+        Bitmap bitmap = generateCode.encodeAsBitmap(aboba.getText(), aboba.getBarcodeFormat(), getHeightByFormat(aboba.getBarcodeFormat()) , 600, getContext());
         final ImageView myImage = (ImageView) rootView.findViewById(R.id.test);
         myImage.setImageBitmap(bitmap);
 
@@ -90,74 +109,16 @@ public class ScannedFragment extends Fragment {
         return QrSimilar.contains(bf)?600:300;
     }
 
-    Bitmap encodeAsBitmap(String contents, BarcodeFormat format, int img_width) {
-        String contentsToEncode = contents;
-        if (contentsToEncode == null) {
-            return null;
-        }
-        Map<EncodeHintType, Object> hints = null;
-        String encoding = guessAppropriateEncoding(contentsToEncode);
-        if (encoding != null) {
-            hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
-            hints.put(EncodeHintType.CHARACTER_SET, encoding);
-
-        }
-        MultiFormatWriter writer = new MultiFormatWriter();
-        BitMatrix result;
-        try {
-            result = writer.encode(contentsToEncode, format, img_width, getHeightByFormat(format), hints);
-        } catch (IllegalArgumentException iae) {
-            // Unsupported format
-            Log.d("XXX4", "Не поддерживаемый формат -" + iae);
-            Toast.makeText(getContext(), iae.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            return null;
-        } catch (Exception e) {
-            Toast.makeText(getContext(), "Невозможно создать", Toast.LENGTH_SHORT).show();
-            return null;
-        }
-
-        int width = result.getWidth();
-        int height = result.getHeight();
-        int[] pixels = new int[width * height];
-
-
-        for (int y = 0; y < height; y++) {
-            int offset = y * width;
-            for (int x = 0; x < width; x++) {
-                pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
+    private void deleteLastHistoryEntry() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                History lastEntry = mHistoryDAO.getLastEntry();
+                if (lastEntry != null) {
+                    mHistoryDAO.deleteHistory(lastEntry);
+                }
             }
-        }
-
-        int img_widths = 400;
-        int img_heights = 400;
-
-        Bitmap bitmap = Bitmap.createBitmap(width, height,
-                Bitmap.Config.ARGB_8888);
-        bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
-
-        if (format == BarcodeFormat.DATA_MATRIX) {
-            bitmap = drawScaledBitmap(bitmap, img_widths, img_heights);
-        }
-        return bitmap;
-
+        }).start();
     }
 
-    public Bitmap drawScaledBitmap(Bitmap bitmap, int img_widths, int img_heights) {
-        final int bmWidth = bitmap.getWidth();
-        final int bmHeight = bitmap.getHeight();
-        final int wScalingFactor = img_widths / bmWidth;
-        final int hScalingFactor = img_heights / bmHeight;
-        final int scalingFactor = Math.min(wScalingFactor, hScalingFactor);
-        return scalingFactor > 1 ? Bitmap.createScaledBitmap(bitmap, bmWidth * scalingFactor, bmHeight * scalingFactor, false) : bitmap;
-    }
-
-    private static String guessAppropriateEncoding(CharSequence contents) {
-        // Very crude at the moment
-        for (int i = 0; i < contents.length(); i++) {
-            if (contents.charAt(i) > 0xFF) {
-                return "UTF-8";
-            }
-        }
-        return null;
-    }
 }

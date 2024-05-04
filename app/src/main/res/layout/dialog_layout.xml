@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/custom_rounded_constraint"
-    android:padding="16dp"
+    android:paddingBottom="16dp"
+    android:paddingStart="16dp"
     android:id="@+id/meow"
     android:elevation="4dp">
 
@@ -13,12 +14,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:padding="6dp"
         android:layout_alignParentTop="true"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:background="@drawable/custom_rounded_constraint_close_btn"
         android:src="@drawable/ic_menu_close_24dp"/>
 
     <!-- Dialog content -->
     <TextView
+        android:layout_marginTop="16dp"
         android:id="@+id/text_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

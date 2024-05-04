@@ -1,21 +1,24 @@
 package com.example.myapplication.ui.notifications;
 
+import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Vibrator;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +34,6 @@ import com.example.myapplication.HistoryDB;
 import com.example.myapplication.R;
 
 import java.util.List;
-import java.util.Objects;
 
 public class HistoryFragment extends Fragment {
 
@@ -70,7 +72,6 @@ public class HistoryFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // Инициализация DAO перед выполнением запроса
             historyDAO = Room.databaseBuilder(context, HistoryDB.class, "HistoryDB")
                     .build().getHistoryDAO();
         }
@@ -84,7 +85,6 @@ public class HistoryFragment extends Fragment {
         @Override
         protected void onPostExecute(List<History> historyList) {
             super.onPostExecute(historyList);
-            // Создание и добавление карточек истории
             for (History history : historyList) {
                 CardView cardView = createHistoryCard(context, history);
                 historyListLayout.addView(cardView);
@@ -110,7 +110,7 @@ public class HistoryFragment extends Fragment {
             LinearLayout layout = new LinearLayout(context);
             layout.setLayoutParams(layoutParams);
             layout.setOrientation(LinearLayout.HORIZONTAL);
-            layout.setPadding(24, 24, 24, 24);
+            layout.setPadding(24, 0, 0, 0);
 
             LinearLayout.LayoutParams left_layout_params = new LinearLayout.LayoutParams(
                     0,
@@ -128,37 +128,81 @@ public class HistoryFragment extends Fragment {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
             );
-            dateTimeParams.setMargins(0, 0, 0, dpToPx(context, 6)); // Уменьшаем отступ вниз
+            dateTimeParams.setMargins(0, 24, 0, dpToPx(context, 6));
             dateTimeTextView.setLayoutParams(dateTimeParams);
             left_layout.addView(dateTimeTextView);
 
             TextView resultTextView = new TextView(context);
+            LinearLayout.LayoutParams resultTextParams = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            resultTextParams.setMargins(0, 0, 0, 24);
+            resultTextView.setLayoutParams(resultTextParams);
             resultTextView.setText(history.getResult_text());
-            resultTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16); // Устанавливаем размер текста
-            resultTextView.setTextColor(Color.BLACK); // Устанавливаем цвет текста
+            resultTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+            resultTextView.setTextColor(Color.BLACK);
             left_layout.addView(resultTextView);
+            left_layout.setHapticFeedbackEnabled(false);
+            left_layout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Vibrator v = (Vibrator) cardView.getContext().getSystemService(cardView.getContext().VIBRATOR_SERVICE);
+                            v.vibrate(50);
+                            String resultText = resultTextView.getText().toString();
+                            ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                            ClipData clip = ClipData.newPlainText("Result Text", resultText);
+                            if (clipboard != null) {
+                                clipboard.setPrimaryClip(clip);
+                                Toast.makeText(context, "Результат скопирован!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }, 200);
+
+                    return true;
+                }
+            });
 
             layout.addView(left_layout);
 
             ImageView imageView = new ImageView(context);
             imageView.setImageResource(R.drawable.ic_trash_24dp);
+            imageView.setBackgroundResource(R.drawable.custom_rounded_constraint_history_delete);
             imageView.setId(history.getId());
             LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
+                    ViewGroup.LayoutParams.MATCH_PARENT
             );
             imageParams.gravity = Gravity.CENTER_VERTICAL | Gravity.END;
             imageView.setLayoutParams(imageParams);
-            imageView.setPadding(12,12,12,12);
+            imageView.setPadding(24,0,24,0);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            historyDAO.deleteHistory(history);
-                        }
-                    }).start();
+                    AlertDialog alertDialog = new AlertDialog.Builder(cardView.getContext())
+                            .setTitle("Подтвердите удаление")
+                            .setMessage("Вы действительно хотите удалить?")
+                            .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            historyDAO.deleteHistory(history);
+                                            historyListLayout.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    updateHistoryList();
+                                                }
+                                            });
+                                        }
+                                    }).start();
+                                }})
+                            .setNegativeButton("Отмена", null).show();
                 }
             });
             layout.addView(imageView);
@@ -168,15 +212,15 @@ public class HistoryFragment extends Fragment {
 
             return cardView;
         }
-
-        // Метод для преобразования dp в пиксели
         private int dpToPx(Context context, int dp) {
             float density = context.getResources().getDisplayMetrics().density;
             return Math.round(dp * density);
         }
 
-
-
+        private void updateHistoryList() {
+            historyListLayout.removeAllViews();
+            new LoadHistoryTask(context, historyListLayout).execute();
+        }
     }
 
 
