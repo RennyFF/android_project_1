@@ -115,7 +115,7 @@ public class HistoryFragment extends Fragment {
             LinearLayout.LayoutParams left_layout_params = new LinearLayout.LayoutParams(
                     0,
                     ViewGroup.LayoutParams.WRAP_CONTENT,
-                    3.0f // увеличиваем вес
+                    3.0f
             );
             LinearLayout left_layout = new LinearLayout(context);
             left_layout_params.setMargins(0, 0,24,0);

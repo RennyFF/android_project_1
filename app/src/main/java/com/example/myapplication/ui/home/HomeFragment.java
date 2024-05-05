@@ -45,6 +45,7 @@ import com.example.myapplication.HistoryDAO;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
@@ -89,14 +90,7 @@ public class HomeFragment extends Fragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        History history = new History(ResultTextCODE.DATE, ResultTextCODE.RESULT_TEXT, ResultTextCODE.TYPE);
                         Vibrator v = (Vibrator) requireContext().getSystemService(requireContext().VIBRATOR_SERVICE);
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mHistoryDAO.addHistory(history);
-                            }
-                        }).start();
                         if(settings.getBoolean("Vibr_Switch", true)){
                             v.vibrate(150);
                         }
@@ -106,6 +100,13 @@ public class HomeFragment extends Fragment {
                         ScanResult sr = new ScanResult(result.getBarcodeFormat().toString(), getNow(), result.getText().toString());
                       ResultTextCODE = sr;
                       aboba = result;
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                History his = new History(ResultTextCODE.DATE, ResultTextCODE.RESULT_TEXT, ResultTextCODE.TYPE);
+                                mHistoryDAO.addHistory(his);
+                            }
+                        }).start();
                         NavController navController = Navigation.findNavController(requireView());
                         navController.navigate(id.navigation_scanned);
                     }
