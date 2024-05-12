@@ -40,4 +40,15 @@
         android:name="com.example.myapplication.ui.notifications.HistoryFragment"
         android:label="@string/historyscanned"
         tools:layout="@layout/fragment_history" />
+
+    <fragment
+        android:id="@+id/navigation_generate_code"
+        android:name="com.example.myapplication.ui.dashboard.GenerateFragment"
+        android:label="@string/generatecode"
+        tools:layout="@layout/add_newcode" />
+    <fragment
+        android:id="@+id/navigation_preview_generated"
+        android:name="com.example.myapplication.ui.dashboard.CardFragment"
+        android:label="@string/cardfragment"
+        tools:layout="@layout/fragment_card" />
 </navigation>

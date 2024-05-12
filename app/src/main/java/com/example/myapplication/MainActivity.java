@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     public HistoryDB historyDB;
+    public GenerateHistoryDB generateHistoryDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +44,7 @@ public class MainActivity extends AppCompatActivity {
         };
         historyDB = Room.databaseBuilder(getApplicationContext(), HistoryDB.class,
                 "HistoryDB").addCallback(myCallBack).build();
-    }
-    public HistoryDAO getHistoryDAO() {
-        return historyDB.getHistoryDAO();
+        generateHistoryDB = Room.databaseBuilder(getApplicationContext(), GenerateHistoryDB.class,
+                "GenerateHistoryDB").addCallback(myCallBack).build();
     }
 }

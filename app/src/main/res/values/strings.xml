@@ -31,4 +31,8 @@
     <string name="null_text">null</string>
     <string name="back_to_settings">Настройки</string>
     <string name="historyscanned">HistoryScanned</string>
+    <string name="generation_title">Генерация кодов</string>
+    <string name="btn_generate">Создать код</string>
+    <string name="generatecode">GenerateCode</string>
+    <string name="cardfragment">CardFragment</string>
 </resources>
